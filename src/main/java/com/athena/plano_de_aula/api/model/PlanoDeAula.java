@@ -2,13 +2,32 @@ package com.athena.plano_de_aula.api.model;
 
 import java.util.ArrayList;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "plano_de_aula")
 public class PlanoDeAula {
+	
+	@Id
 	private Integer id;
+	
 	private Integer idRecurso;
+	
+	@Column(length = 60)
 	private String titulo;
 	private String conteudo;
+	
+	@Column(length = 60)
 	private String autor;
+	
+	@ManyToOne
 	private Disciplina disciplina;
+	
+	
 	private ArrayList<Descritor> descritores;
 	
 	private Boolean ehPublico;
