@@ -11,6 +11,14 @@ public class PlanoDeAula {
 	private Disciplina disciplina;
 	private ArrayList<Descritor> descritores;
 	
+	private Boolean ehPublico;
+	
+	public Boolean getEhPublico() {
+		return ehPublico;
+	}
+	public void setEhPublico(Boolean ehPublico) {
+		this.ehPublico = ehPublico;
+	}
 	public Integer getId() {
 		return id;
 	}
