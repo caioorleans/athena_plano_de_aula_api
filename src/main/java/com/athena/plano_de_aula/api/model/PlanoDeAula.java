@@ -1,10 +1,16 @@
 package com.athena.plano_de_aula.api.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -13,12 +19,15 @@ import javax.persistence.Table;
 public class PlanoDeAula {
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
 	private Integer idRecurso;
 	
 	@Column(length = 60)
 	private String titulo;
+	
+	@Column(length = 1000)
 	private String conteudo;
 	
 	@Column(length = 60)
@@ -27,8 +36,9 @@ public class PlanoDeAula {
 	@ManyToOne
 	private Disciplina disciplina;
 	
-	
-	private ArrayList<Descritor> descritores;
+	@ManyToMany
+	@JoinTable(name="plano_possui_descritores",joinColumns={@JoinColumn(name="plano_id")}, inverseJoinColumns={@JoinColumn(name="descritor_id")})
+	private List<Descritor> descritores;
 	
 	private Boolean ehPublico;
 	
@@ -74,7 +84,7 @@ public class PlanoDeAula {
 	public void setDisciplina(Disciplina disciplina) {
 		this.disciplina = disciplina;
 	}
-	public ArrayList<Descritor> getDescritores() {
+	public List<Descritor> getDescritores() {
 		return descritores;
 	}
 	public void setDescritores(ArrayList<Descritor> descritores) {
