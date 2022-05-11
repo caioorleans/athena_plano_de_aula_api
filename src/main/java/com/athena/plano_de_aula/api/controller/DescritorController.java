@@ -7,20 +7,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.athena.plano_de_aula.api.model.Descritor;
-import com.athena.plano_de_aula.api.model.Disciplina;
-import com.athena.plano_de_aula.api.repository.DescritorRepository;
+import com.athena.plano_de_aula.api.dto.DescritorDTO;
+import com.athena.plano_de_aula.api.service.DescritorService;
 
 @RestController
 @RequestMapping("/descritores")
 public class DescritorController {
 	
 	@Autowired
-	private DescritorRepository repository;
+	private DescritorService service;
 	
 	@GetMapping
-	public List<Descritor> findByDisciplina(Disciplina d){
-		return repository.findByDisciplina(d.getId());
+	public List<DescritorDTO> findByDisciplina(Integer id){
+		return service.findByDisciplina(id);
 	}
 
 }

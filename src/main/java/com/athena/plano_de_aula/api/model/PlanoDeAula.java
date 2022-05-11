@@ -87,8 +87,8 @@ public class PlanoDeAula {
 	public List<Descritor> getDescritores() {
 		return descritores;
 	}
-	public void setDescritores(ArrayList<Descritor> descritores) {
-		this.descritores = descritores;
+	public void setDescritores(List<Descritor> list) {
+		this.descritores = list;
 	}
 	
 }
