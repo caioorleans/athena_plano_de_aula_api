@@ -8,8 +8,6 @@ public class PlanoDeAulaDTO {
 	
 	private Integer id;
 	
-	private Integer idRecurso;
-	
 	private String titulo;
 	
 	private String conteudo;
@@ -20,7 +18,37 @@ public class PlanoDeAulaDTO {
 	
 	private List<DescritorDTO> descritores;
 	
+	private List<RecursoDTO> recursos;
+	
+	private Integer ano;
+	
+	private String plataforma;
+	
 	private Boolean ehPublico;
+	
+	public List<RecursoDTO> getRecursos() {
+		return recursos;
+	}
+
+	public void setRecursos(List<RecursoDTO> recursos) {
+		this.recursos = recursos;
+	}
+
+	public Integer getAno() {
+		return ano;
+	}
+
+	public void setAno(Integer ano) {
+		this.ano = ano;
+	}
+
+	public String getPlataforma() {
+		return plataforma;
+	}
+
+	public void setPlataforma(String plataforma) {
+		this.plataforma = plataforma;
+	}
 
 	public Integer getId() {
 		return id;
@@ -28,14 +56,6 @@ public class PlanoDeAulaDTO {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public Integer getIdRecurso() {
-		return idRecurso;
-	}
-
-	public void setIdRecurso(Integer idRecurso) {
-		this.idRecurso = idRecurso;
 	}
 
 	public String getTitulo() {

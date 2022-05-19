@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.athena.plano_de_aula.api.dto.PlanoDeAulaDTO;
-import com.athena.plano_de_aula.api.model.PlanoDeAula;
-import com.athena.plano_de_aula.api.repository.PlanoDeAulaRepository;
 import com.athena.plano_de_aula.api.service.PlanoDeAulaService;
 
 @RestController

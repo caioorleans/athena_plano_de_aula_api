@@ -1,6 +1,5 @@
 package com.athena.plano_de_aula.api.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -12,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -22,16 +22,21 @@ public class PlanoDeAula {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	private Integer idRecurso;
-	
 	@Column(length = 60)
 	private String titulo;
 	
-	@Column(length = 1000)
+	@Column(length = 2000)
 	private String conteudo;
 	
 	@Column(length = 60)
 	private String autor;
+	
+	private Integer ano;
+	
+	private Boolean ehPublico;
+	
+	@Column(length = 10)
+	private String plataforma;
 	
 	@ManyToOne
 	private Disciplina disciplina;
@@ -40,8 +45,28 @@ public class PlanoDeAula {
 	@JoinTable(name="plano_possui_descritores",joinColumns={@JoinColumn(name="plano_id")}, inverseJoinColumns={@JoinColumn(name="descritor_id")})
 	private List<Descritor> descritores;
 	
-	private Boolean ehPublico;
+	@OneToMany
+	@JoinColumn(name = "plano_id")
+	private List<Recurso> recursos;
 	
+	public Integer getAno() {
+		return ano;
+	}
+	public void setAno(Integer ano) {
+		this.ano = ano;
+	}
+	public String getPlataforma() {
+		return plataforma;
+	}
+	public void setPlataforma(String plataforma) {
+		this.plataforma = plataforma;
+	}
+	public List<Recurso> getRecursos() {
+		return recursos;
+	}
+	public void setRecursos(List<Recurso> recursos) {
+		this.recursos = recursos;
+	}
 	public Boolean getEhPublico() {
 		return ehPublico;
 	}
@@ -54,12 +79,7 @@ public class PlanoDeAula {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Integer getIdRecurso() {
-		return idRecurso;
-	}
-	public void setIdRecurso(Integer idRecurso) {
-		this.idRecurso = idRecurso;
-	}
+	
 	public String getTitulo() {
 		return titulo;
 	}
