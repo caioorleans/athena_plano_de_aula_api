@@ -8,10 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.athena.plano_de_aula.api.dto.DescritorDTO;
 import com.athena.plano_de_aula.api.dto.PlanoDeAulaDTO;
-import com.athena.plano_de_aula.api.dto.RecursoDTO;
 import com.athena.plano_de_aula.api.model.Descritor;
 import com.athena.plano_de_aula.api.model.PlanoDeAula;
-import com.athena.plano_de_aula.api.model.Recurso;
 import com.athena.plano_de_aula.api.repository.PlanoDeAulaRepository;
 
 @Service
@@ -44,16 +42,7 @@ public class PlanoDeAulaService {
 		
 		plano.setDescritores(descritores);
 		
-		List<Recurso> recursos = new ArrayList<Recurso>();
-		
-		for(RecursoDTO r : novoPlano.getRecursos()) {
-			Recurso recurso = new Recurso();
-			recurso.setId(r.getId());
-			
-			recursos.add(recurso);
-		}
-		
-		plano.setRecursos(recursos);
+		plano.setRecursos(novoPlano.getRecursos());
 		
 		repository.save(plano);
 		
@@ -83,15 +72,7 @@ public class PlanoDeAulaService {
 		}
 		planoDTO.setDescritores(descritores);
 		
-		List<RecursoDTO> recursos = new ArrayList<RecursoDTO>();
-		for(Recurso r : plano.getRecursos()) {
-			RecursoDTO recurso = new RecursoDTO();
-			recurso.setId(r.getId());
-			
-			recursos.add(recurso);
-		}
-		
-		planoDTO.setRecursos(recursos);
+		planoDTO.setRecursos(plano.getRecursos());
 		
 		return planoDTO;
 	}

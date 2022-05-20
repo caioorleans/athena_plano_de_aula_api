@@ -2,7 +2,9 @@ package com.athena.plano_de_aula.api.model;
 
 import java.util.List;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,7 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -45,9 +46,10 @@ public class PlanoDeAula {
 	@JoinTable(name="plano_possui_descritores",joinColumns={@JoinColumn(name="plano_id")}, inverseJoinColumns={@JoinColumn(name="descritor_id")})
 	private List<Descritor> descritores;
 	
-	@OneToMany
-	@JoinColumn(name = "plano_id")
-	private List<Recurso> recursos;
+	@ElementCollection
+	@CollectionTable(name="plano_recurso", joinColumns=@JoinColumn(name="id_plano"))
+	@Column(name="id_recurso")
+	private List<Integer> recursos;
 	
 	public Integer getAno() {
 		return ano;
@@ -61,10 +63,10 @@ public class PlanoDeAula {
 	public void setPlataforma(String plataforma) {
 		this.plataforma = plataforma;
 	}
-	public List<Recurso> getRecursos() {
+	public List<Integer> getRecursos() {
 		return recursos;
 	}
-	public void setRecursos(List<Recurso> recursos) {
+	public void setRecursos(List<Integer> recursos) {
 		this.recursos = recursos;
 	}
 	public Boolean getEhPublico() {

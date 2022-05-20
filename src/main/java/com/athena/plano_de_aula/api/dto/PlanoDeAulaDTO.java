@@ -18,7 +18,7 @@ public class PlanoDeAulaDTO {
 	
 	private List<DescritorDTO> descritores;
 	
-	private List<RecursoDTO> recursos;
+	private List<Integer> recursos;
 	
 	private Integer ano;
 	
@@ -26,11 +26,11 @@ public class PlanoDeAulaDTO {
 	
 	private Boolean ehPublico;
 	
-	public List<RecursoDTO> getRecursos() {
+	public List<Integer> getRecursos() {
 		return recursos;
 	}
 
-	public void setRecursos(List<RecursoDTO> recursos) {
+	public void setRecursos(List<Integer> recursos) {
 		this.recursos = recursos;
 	}
 
