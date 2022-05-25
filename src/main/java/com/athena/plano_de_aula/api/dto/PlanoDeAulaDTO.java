@@ -1,8 +1,11 @@
 package com.athena.plano_de_aula.api.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.athena.plano_de_aula.api.model.Descritor;
 import com.athena.plano_de_aula.api.model.Disciplina;
+import com.athena.plano_de_aula.api.model.PlanoDeAula;
 
 public class PlanoDeAulaDTO {
 	
@@ -25,6 +28,29 @@ public class PlanoDeAulaDTO {
 	private String plataforma;
 	
 	private Boolean ehPublico;
+	
+	public PlanoDeAulaDTO(PlanoDeAula plano) {
+		this.setId(plano.getId());
+		this.setTitulo(plano.getTitulo());
+		this.setConteudo(plano.getConteudo());
+		this.setAutor(plano.getAutor());
+		this.setEhPublico(plano.getEhPublico());
+		this.setDisciplina(plano.getDisciplina());
+		this.setAno(plano.getAno());
+		this.setPlataforma(plano.getPlataforma());
+		
+		List<DescritorDTO> descritores = new ArrayList<DescritorDTO>();
+		for(Descritor d : plano.getDescritores()) {
+			DescritorDTO descritor = new DescritorDTO();
+			descritor.setId(d.getId());
+			descritor.setDescricao(d.getDescricao());
+			
+			descritores.add(descritor);
+		}
+		this.setDescritores(descritores);
+		
+		this.setRecursos(plano.getRecursos());
+	}
 	
 	public List<Integer> getRecursos() {
 		return recursos;

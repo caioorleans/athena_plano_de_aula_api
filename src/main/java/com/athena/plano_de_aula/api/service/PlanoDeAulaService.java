@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.athena.plano_de_aula.api.dto.DescritorDTO;
+import com.athena.plano_de_aula.api.dto.FiltroBuscaDTO;
 import com.athena.plano_de_aula.api.dto.PlanoDeAulaDTO;
 import com.athena.plano_de_aula.api.model.Descritor;
 import com.athena.plano_de_aula.api.model.PlanoDeAula;
@@ -51,29 +53,21 @@ public class PlanoDeAulaService {
 	public PlanoDeAulaDTO findById(Integer id) {
 		PlanoDeAula plano = repository.findById(id).get();
 		
-		PlanoDeAulaDTO planoDTO = new PlanoDeAulaDTO();
-		
-		planoDTO.setId(plano.getId());
-		planoDTO.setTitulo(plano.getTitulo());
-		planoDTO.setConteudo(plano.getConteudo());
-		planoDTO.setAutor(plano.getAutor());
-		planoDTO.setEhPublico(plano.getEhPublico());
-		planoDTO.setDisciplina(plano.getDisciplina());
-		planoDTO.setAno(plano.getAno());
-		planoDTO.setPlataforma(plano.getPlataforma());
-		
-		List<DescritorDTO> descritores = new ArrayList<DescritorDTO>();
-		for(Descritor d : plano.getDescritores()) {
-			DescritorDTO descritor = new DescritorDTO();
-			descritor.setId(d.getId());
-			descritor.setDescricao(d.getDescricao());
-			
-			descritores.add(descritor);
-		}
-		planoDTO.setDescritores(descritores);
-		
-		planoDTO.setRecursos(plano.getRecursos());
+		PlanoDeAulaDTO planoDTO = new PlanoDeAulaDTO(plano);
 		
 		return planoDTO;
+	}
+	
+	public List<PlanoDeAulaDTO> findByFiltro(Pageable pageable, FiltroBuscaDTO filtro){
+		
+		List<PlanoDeAulaDTO> planosDTO = new ArrayList<PlanoDeAulaDTO>();
+		
+		List<PlanoDeAula> planos =  repository.findByTituloContains(filtro.getTitulo());
+		
+		for(PlanoDeAula p : planos) {
+			planosDTO.add(new PlanoDeAulaDTO(p));
+		}
+		
+		return planosDTO;
 	}
 }
