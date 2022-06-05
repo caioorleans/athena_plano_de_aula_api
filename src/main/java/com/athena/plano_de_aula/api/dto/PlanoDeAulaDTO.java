@@ -29,6 +29,12 @@ public class PlanoDeAulaDTO {
 	
 	private Boolean ehPublico;
 	
+	
+	
+	public PlanoDeAulaDTO() {
+		super();
+	}
+
 	public PlanoDeAulaDTO(PlanoDeAula plano) {
 		this.setId(plano.getId());
 		this.setTitulo(plano.getTitulo());

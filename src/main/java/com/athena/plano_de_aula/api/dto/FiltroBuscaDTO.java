@@ -2,7 +2,7 @@ package com.athena.plano_de_aula.api.dto;
 
 public class FiltroBuscaDTO {
 	private String titulo;
-	private String disciplina;
+	private Integer disciplina;
 	private String plataforma;
 	private Integer ano;
 	private String descritor;
@@ -13,10 +13,10 @@ public class FiltroBuscaDTO {
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
 	}
-	public String getDisciplina() {
+	public Integer getDisciplina() {
 		return disciplina;
 	}
-	public void setDisciplina(String disciplina) {
+	public void setDisciplina(Integer disciplina) {
 		this.disciplina = disciplina;
 	}
 	public String getPlataforma() {

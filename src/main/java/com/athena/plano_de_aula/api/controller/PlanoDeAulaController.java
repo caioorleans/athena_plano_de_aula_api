@@ -1,6 +1,5 @@
 package com.athena.plano_de_aula.api.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.athena.plano_de_aula.api.dto.FiltroBuscaDTO;
 import com.athena.plano_de_aula.api.dto.PlanoDeAulaDTO;
 import com.athena.plano_de_aula.api.service.PlanoDeAulaService;
 
@@ -34,7 +33,12 @@ public class PlanoDeAulaController {
 	}
 	
 	@GetMapping("/buscaPorFiltro")
-	public List<PlanoDeAulaDTO> findByFilter(Pageable pageable,FiltroBuscaDTO filtro){
-		return service.findByFiltro(pageable, filtro);
+	public List<PlanoDeAulaDTO> findByFilter(@RequestParam(value = "search") String search){
+		return service.findByFiltro(search);
+	}
+	
+	@GetMapping("/buscaPorRecurso")
+	public List<PlanoDeAulaDTO> findByRecurso(Integer recurso, String plataforma, Pageable pageable){
+		return service.findByRecurso(plataforma, recurso, pageable);
 	}
 }
