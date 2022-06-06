@@ -29,8 +29,4 @@ public class SearchCriteria {
 	public void setValue(Object value) {
 		this.value = value;
 	}
-	public boolean isOrPredicate() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 }

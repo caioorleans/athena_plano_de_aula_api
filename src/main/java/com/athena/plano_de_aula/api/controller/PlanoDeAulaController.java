@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.athena.plano_de_aula.api.dto.FiltroDTO;
 import com.athena.plano_de_aula.api.dto.PlanoDeAulaDTO;
 import com.athena.plano_de_aula.api.service.PlanoDeAulaService;
 
@@ -35,6 +36,11 @@ public class PlanoDeAulaController {
 	@GetMapping("/buscaPorFiltro")
 	public List<PlanoDeAulaDTO> findByFilter(@RequestParam(value = "search") String search){
 		return service.findByFiltro(search);
+	}
+	
+	@GetMapping("/buscaPorFiltro2")
+	public List<PlanoDeAulaDTO> findByFilter(FiltroDTO filtro){
+		return service.findByFiltro(filtro);
 	}
 	
 	@GetMapping("/buscaPorRecurso")
