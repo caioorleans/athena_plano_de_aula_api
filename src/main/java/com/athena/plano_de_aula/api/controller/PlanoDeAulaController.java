@@ -30,7 +30,7 @@ public class PlanoDeAulaController {
 	
 	@GetMapping(value = "/{id}")
 	public PlanoDeAulaDTO findById(@PathVariable Integer id) {
-		return service.findById(id);
+		return new PlanoDeAulaDTO(service.findById(id));
 	}
 	
 	@GetMapping("/buscaPorFiltro")

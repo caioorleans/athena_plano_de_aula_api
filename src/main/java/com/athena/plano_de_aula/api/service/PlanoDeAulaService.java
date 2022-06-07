@@ -1,8 +1,8 @@
 package com.athena.plano_de_aula.api.service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.athena.plano_de_aula.api.dto.DescritorDTO;
 import com.athena.plano_de_aula.api.dto.FiltroDTO;
 import com.athena.plano_de_aula.api.dto.PlanoDeAulaDTO;
+import com.athena.plano_de_aula.api.exceptionhandler.ProductNotFoundException;
 import com.athena.plano_de_aula.api.model.Descritor;
 import com.athena.plano_de_aula.api.model.Disciplina;
 import com.athena.plano_de_aula.api.model.PlanoDeAula;
@@ -65,12 +66,10 @@ public class PlanoDeAulaService {
 
 	}
 
-	public PlanoDeAulaDTO findById(Integer id) {
-		PlanoDeAula plano = repository.findById(id).get();
+	public PlanoDeAula findById(Integer id) {
+		Optional<PlanoDeAula> plano = repository.findById(id);
 
-		PlanoDeAulaDTO planoDTO = new PlanoDeAulaDTO(plano);
-
-		return planoDTO;
+		return plano.orElseThrow(()-> new ProductNotFoundException());
 	}
 
 	public List<PlanoDeAulaDTO> findByFiltro(String search) {
