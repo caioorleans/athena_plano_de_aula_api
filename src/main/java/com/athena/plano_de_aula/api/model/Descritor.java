@@ -20,6 +20,13 @@ public class Descritor {
 	@ManyToOne
 	private Disciplina disciplina;
 	
+	public Descritor() {
+	}
+	public Descritor(String id, String descricao, Disciplina disciplina) {
+		this.id = id;
+		this.descricao = descricao;
+		this.disciplina = disciplina;
+	}
 	public String getId() {
 		return id;
 	}

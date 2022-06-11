@@ -1,7 +1,5 @@
 package com.athena.plano_de_aula.api.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,35 +12,35 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.athena.plano_de_aula.api.dto.DescritorDTO;
-import com.athena.plano_de_aula.api.dto.DescritorFormulario;
-import com.athena.plano_de_aula.api.service.DescritorService;
+import com.athena.plano_de_aula.api.dto.RecursoFormulario;
+import com.athena.plano_de_aula.api.model.Recurso;
+import com.athena.plano_de_aula.api.model.RecursoId;
+import com.athena.plano_de_aula.api.service.RecursoService;
 
 @RestController
-@RequestMapping("/descritores")
-public class DescritorController {
+@RequestMapping("/recursos")
+public class RecursoController {
 	
 	@Autowired
-	private DescritorService service;
+	private RecursoService service;
 	
-	@PostMapping("/salvar")
-	public void save(@Valid @RequestBody DescritorFormulario form) {
-		service.save(form);
+	@GetMapping("/buscarPorId/{id}")
+	public Recurso findById(@Valid @PathVariable RecursoId id) {
+		return findById(id);
 	}
 	
-	@GetMapping("buscarPorDisciplina")
-	public List<DescritorDTO> findByDisciplina(Integer id){
-		return service.findByDisciplina(id);
+	@PostMapping("/salvar")
+	public void save(@Valid @RequestBody RecursoFormulario r) {
+		service.save(r);
 	}
 	
 	@PutMapping("/atualizar")
-	public void update(@Valid @RequestBody DescritorFormulario form) {
-		service.update(form);
+	public void update(@Valid @RequestBody RecursoFormulario r) {
+		service.update(r);
 	}
 	
 	@DeleteMapping("/apagar/{id}")
-	public void delete(@PathVariable String id) {
+	public void delete(@Valid @PathVariable RecursoId id) {
 		service.delete(id);
 	}
-
 }
