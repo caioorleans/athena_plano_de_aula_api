@@ -1,5 +1,7 @@
 package com.athena.plano_de_aula.api.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +26,13 @@ public class RecursoController {
 	@Autowired
 	private RecursoService service;
 	
+	@GetMapping
+	public List<Recurso> findAll(){
+		return service.findAll();
+	}
+	
 	@GetMapping("/buscarPorId/{id}")
-	public Recurso findById(@Valid @PathVariable RecursoId id) {
+	public Recurso findById(@PathVariable RecursoId id) {
 		return findById(id);
 	}
 	
@@ -39,8 +46,8 @@ public class RecursoController {
 		service.update(r);
 	}
 	
-	@DeleteMapping("/apagar/{id}")
-	public void delete(@Valid @PathVariable RecursoId id) {
+	@DeleteMapping("/apagar")
+	public void delete(@Valid @RequestBody RecursoId id) {
 		service.delete(id);
 	}
 }

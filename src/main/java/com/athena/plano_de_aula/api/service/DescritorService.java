@@ -22,6 +22,10 @@ public class DescritorService {
 	@Autowired
 	private DisciplinaService disciplinaService;
 	
+	public List<DescritorDTO> findAll(){
+		return toDTO(repository.findAll());
+	}
+	
 	public Descritor findById(String id) {
 		return repository.findById(id.toUpperCase()).orElseThrow(()-> new ProductNotFoundException());
 	}
@@ -29,15 +33,7 @@ public class DescritorService {
 	public List<DescritorDTO> findByDisciplina(Integer id) {
 		
 		List<Descritor> descritores = repository.findByDisciplina(id);
-		List<DescritorDTO> descritoresDTO = new ArrayList<DescritorDTO>();
-		
-		for(Descritor d : descritores) {
-			DescritorDTO descritor = new DescritorDTO();
-			descritor.setId(d.getId());
-			descritor.setDescricao(d.getDescricao());
-			
-			descritoresDTO.add(descritor);
-		}
+		List<DescritorDTO> descritoresDTO = toDTO(descritores);
 		
 		return descritoresDTO;
 	}
@@ -56,5 +52,19 @@ public class DescritorService {
 	public void delete(String id) {
 		Descritor d = findById(id);
 		repository.delete(d);
+	}
+	
+	public List<DescritorDTO> toDTO(List<Descritor> descritores) {
+		List<DescritorDTO> descritoresDTO = new ArrayList<DescritorDTO>();
+		
+		for(Descritor d : descritores) {
+			DescritorDTO descritor = new DescritorDTO();
+			descritor.setId(d.getId());
+			descritor.setDescricao(d.getDescricao());
+			
+			descritoresDTO.add(descritor);
+		}
+		
+		return descritoresDTO;
 	}
 }

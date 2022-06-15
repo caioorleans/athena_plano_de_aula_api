@@ -1,11 +1,18 @@
 package com.athena.plano_de_aula.api.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.athena.plano_de_aula.api.dto.PlanoFormulario;
-import com.athena.plano_de_aula.api.repository.DescritorRepository;
-import com.athena.plano_de_aula.api.repository.DisciplinaRepository;
+import com.athena.plano_de_aula.api.exceptionhandler.ProductNotFoundException;
+import com.athena.plano_de_aula.api.model.Descritor;
+import com.athena.plano_de_aula.api.model.Disciplina;
+import com.athena.plano_de_aula.api.model.PlanoDeAula;
+import com.athena.plano_de_aula.api.model.Recurso;
+import com.athena.plano_de_aula.api.model.RecursoId;
 import com.athena.plano_de_aula.api.repository.PlanoDeAulaRepository;
 
 @Service
@@ -15,13 +22,87 @@ public class PlanoDeAulaService {
 	private PlanoDeAulaRepository repository;
 	
 	@Autowired
-	private DisciplinaRepository disciplinaRepository;
+	private DisciplinaService disciplinaService;
 	
 	@Autowired
-	private DescritorRepository descritorRepository;
+	private DescritorService descritorService;
+	
+	@Autowired
+	private RecursoService recursoService;
 	
 	public void save(PlanoFormulario form) {
+		Disciplina disciplina = disciplinaService.findById(form.getIdDisciplina());
 		
+		List<Descritor> descritores = new ArrayList<Descritor>();
+		for(String descritorId : form.getIdDescritores()) {
+			Descritor novoDescritor = descritorService.findById(descritorId);
+			descritores.add(novoDescritor);
+		}
+		
+		List<Recurso> recursos = new ArrayList<Recurso>();
+		for(RecursoId recursoId : form.getIdRecursos()) {
+			Recurso novoRecurso = recursoService.findById(recursoId);
+			recursos.add(novoRecurso);
+		}
+		
+		PlanoDeAula plano = new PlanoDeAula();
+		plano.setTitulo(form.getTitulo());
+		plano.setConteudo(form.getConteudo());
+		plano.setAutor(form.getAutor());
+		plano.setAno(form.getAno());
+		plano.setDisciplina(disciplina);
+		plano.setDescritores(descritores);
+		plano.setRecursos(recursos);
+		plano.setPlataforma(form.getPlataforma().toUpperCase());
+		plano.setEhPublico(false);
+		
+		repository.save(plano);
+	}
+	
+	public void update(PlanoFormulario form) {
+		findById(form.getId());
+		
+		Disciplina disciplina = disciplinaService.findById(form.getIdDisciplina());
+		
+		List<Descritor> descritores = new ArrayList<Descritor>();
+		for(String descritorId : form.getIdDescritores()) {
+			Descritor novoDescritor = descritorService.findById(descritorId);
+			descritores.add(novoDescritor);
+		}
+		
+		List<Recurso> recursos = new ArrayList<Recurso>();
+		for(RecursoId recursoId : form.getIdRecursos()) {
+			Recurso novoRecurso = recursoService.findById(recursoId);
+			recursos.add(novoRecurso);
+		}
+		
+		PlanoDeAula plano = new PlanoDeAula();
+		plano.setTitulo(form.getTitulo());
+		plano.setConteudo(form.getConteudo());
+		plano.setAutor(form.getAutor());
+		plano.setAno(form.getAno());
+		plano.setDisciplina(disciplina);
+		plano.setDescritores(descritores);
+		plano.setRecursos(recursos);
+		plano.setPlataforma(form.getPlataforma().toUpperCase());
+		plano.setEhPublico(false);
+		plano.setId(form.getId());
+		
+		repository.save(plano);
+		
+	}
+	
+	public PlanoDeAula findById(Integer id) {
+		return repository.findById(id).orElseThrow(()-> new ProductNotFoundException());
+	}
+	
+	public List<PlanoDeAula> findAll(){
+		return repository.findAll();
+	}
+	
+	public void delete(Integer id) {
+		PlanoDeAula plano = findById(id);
+		repository.delete(plano);
 	}
 
 	/*

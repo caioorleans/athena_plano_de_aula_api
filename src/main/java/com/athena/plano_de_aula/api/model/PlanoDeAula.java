@@ -30,6 +30,8 @@ public class PlanoDeAula {
 	@Column(length = 60)
 	private String autor;
 	
+	private String plataforma;
+	
 	private Integer ano;
 	
 	private Boolean ehPublico;
@@ -45,6 +47,14 @@ public class PlanoDeAula {
 	@JoinTable(name="plano_possui_recursos",joinColumns={@JoinColumn(name="id_plano")}, inverseJoinColumns={@JoinColumn(name="id_red"), @JoinColumn(name="plataforma_red")})
 	private List<Recurso> recursos;
 	
+	
+	
+	public String getPlataforma() {
+		return plataforma;
+	}
+	public void setPlataforma(String plataforma) {
+		this.plataforma = plataforma;
+	}
 	public Integer getAno() {
 		return ano;
 	}

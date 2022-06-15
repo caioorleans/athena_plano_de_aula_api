@@ -25,6 +25,11 @@ public class DescritorController {
 	@Autowired
 	private DescritorService service;
 	
+	@GetMapping
+	public List<DescritorDTO> findAll(){
+		return service.findAll();
+	}
+	
 	@PostMapping("/salvar")
 	public void save(@Valid @RequestBody DescritorFormulario form) {
 		service.save(form);

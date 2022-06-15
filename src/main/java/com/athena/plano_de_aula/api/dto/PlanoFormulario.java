@@ -19,12 +19,20 @@ public class PlanoFormulario {
 	@NotNull
 	private String autor;
 	@NotNull
+	private Integer ano;
+	@NotNull
 	private Integer idDisciplina;
 	@NotNull
 	private List<String> idDescritores;
 	@NotNull
 	private List<RecursoId> idRecursos;
 	
+	public Integer getAno() {
+		return ano;
+	}
+	public void setAno(Integer ano) {
+		this.ano = ano;
+	}
 	public Integer getId() {
 		return id;
 	}

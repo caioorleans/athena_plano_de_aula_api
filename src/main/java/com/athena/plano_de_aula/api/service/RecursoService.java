@@ -1,5 +1,7 @@
 package com.athena.plano_de_aula.api.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,11 @@ public class RecursoService {
 	@Autowired
 	private DisciplinaService disciplinaService;
 	
+	public List<Recurso> findAll(){
+		List<Recurso> recursos =  (List<Recurso>) repository.findAll();
+		return recursos;
+	}
+	
 	public Recurso findById(RecursoId rId) {
 		return repository.findById(rId).orElseThrow(()-> new ProductNotFoundException());
 	}
@@ -29,7 +36,7 @@ public class RecursoService {
 		RecursoId rId = new RecursoId();
 		
 		rId.setRecursoId(recurso.getId());
-		rId.setRecursoPlataforma(recurso.getPlataforma());
+		rId.setRecursoPlataforma(recurso.getPlataforma().toUpperCase());
 		
 		novoRecurso.setId(rId);
 		novoRecurso.setTitulo(recurso.getTitulo());
@@ -42,12 +49,13 @@ public class RecursoService {
 	}
 	
 	public void update(RecursoFormulario recurso) {
-		findById(new RecursoId(recurso.getDisciplinaId(),recurso.getPlataforma()));
+		recurso.setPlataforma(recurso.getPlataforma().toUpperCase());
+		findById(new RecursoId(recurso.getId(),recurso.getPlataforma()));
 		save(recurso);
 	}
 	
 	public void delete(RecursoId id) {
-		Recurso r =findById(id);
+		Recurso r = findById(id);
 		repository.delete(r);
 	}
 }
