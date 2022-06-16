@@ -2,13 +2,15 @@ package com.athena.plano_de_aula.api.repository;
 
 import java.util.List;
 
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import com.athena.plano_de_aula.api.model.PlanoDeAula;
+import com.athena.plano_de_aula.api.model.Recurso;
 
 public interface PlanoDeAulaRepository extends JpaRepository<PlanoDeAula, Integer>, JpaSpecificationExecutor<PlanoDeAula>{
+	
+	public List<PlanoDeAula> findByRecursosIn(List<Recurso> recursos);
 
 	//public List<PlanoDeAula> findByAnoAndTituloContains(Integer ano,String titulo, Pageable pageable);
 	

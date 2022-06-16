@@ -58,4 +58,8 @@ public class RecursoService {
 		Recurso r = findById(id);
 		repository.delete(r);
 	}
+	
+	public List<Recurso> findByTitulo(String titulo){
+		return repository.findByTituloContaining(titulo);
+	}
 }
