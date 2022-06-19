@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
+import com.athena.plano_de_aula.api.dto.FiltroDTO;
 import com.athena.plano_de_aula.api.dto.PlanoFormulario;
 import com.athena.plano_de_aula.api.model.PlanoDeAula;
 import com.athena.plano_de_aula.api.service.PlanoDeAulaService;
@@ -71,6 +72,11 @@ public class PlanoDeAulaController {
 		service.delete(id);
 	}
 	
+	@GetMapping("procurarPorFiltro")
+	public List<PlanoDeAula> findByFiltro(@RequestBody FiltroDTO filtro){
+		return service.findByFiltro(filtro);
+	}
+	
 	@RequestMapping(path = "/pdf/{id}")
     public ResponseEntity<?> getPDF(@PathVariable Integer id, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -99,7 +105,7 @@ public class PlanoDeAulaController {
         /* Send the response as downloadable PDF */
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=order.pdf")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=plano_de_aula.pdf")
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(bytes);
 
