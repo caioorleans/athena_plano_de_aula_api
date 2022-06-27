@@ -1,5 +1,7 @@
 package com.athena.plano_de_aula.api.specification;
 
+import java.util.List;
+
 public class SearchCriteria {
 	private String key;
     private String operation;
@@ -11,6 +13,7 @@ public class SearchCriteria {
 		this.operation = operation;
 		this.value = value;
 	}
+	
 	public String getKey() {
 		return key;
 	}
@@ -26,7 +29,7 @@ public class SearchCriteria {
 	public Object getValue() {
 		return value;
 	}
-	public void setValue(Object value) {
+	public void setValue(String value) {
 		this.value = value;
 	}
 }

@@ -72,12 +72,12 @@ public class PlanoDeAulaController {
 		service.delete(id);
 	}
 	
-	@GetMapping("procurarPorFiltro")
+	@PostMapping("procurarPorFiltro")
 	public List<PlanoDeAula> findByFiltro(@RequestBody FiltroDTO filtro){
 		return service.findByFiltro(filtro);
 	}
 	
-	@RequestMapping(path = "/pdf/{id}")
+	@GetMapping(path = "/pdf/{id}")
     public ResponseEntity<?> getPDF(@PathVariable Integer id, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         /* Do Business Logic*/

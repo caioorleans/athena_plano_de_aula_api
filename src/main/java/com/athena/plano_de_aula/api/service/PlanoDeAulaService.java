@@ -150,7 +150,8 @@ public class PlanoDeAulaService {
 		List<SearchCriteria> criterios = buildCriteria(filtro);
 
 		for(SearchCriteria sc : criterios) {
-			builder.with(sc.getKey(),sc.getOperation(),sc.getValue()); }
+			builder.with(sc.getKey(),sc.getOperation(),sc.getValue()); 
+		}
 
 		Specification<PlanoDeAula> spec = builder.build();
 
@@ -163,10 +164,6 @@ public class PlanoDeAulaService {
 	private List<SearchCriteria> buildCriteria(FiltroDTO filtro){
 		List<SearchCriteria> criterios = new ArrayList<SearchCriteria>();
 
-		if(filtro.getTitulo()!=null) { 
-			SearchCriteria sc = new SearchCriteria("titulo",":", filtro.getTitulo()); 
-			criterios.add(sc); 
-		}
 		if(filtro.getAno()!=null) { 
 			SearchCriteria sc = new SearchCriteria("ano",":",filtro.getAno()); 
 			criterios.add(sc); 
@@ -177,11 +174,14 @@ public class PlanoDeAulaService {
 		}
 		if(filtro.getDisciplinaId()!=null) { 
 			Disciplina d = disciplinaService.findById(filtro.getDisciplinaId()); 
-			SearchCriteria sc = new SearchCriteria("disciplina", ":", d); criterios.add(sc); 
+			SearchCriteria sc = new SearchCriteria("disciplina", ":", d); 
+			criterios.add(sc); 
 		}
 		if(filtro.getDescritorId()!=null) { 
-			Descritor d = descritorService.findById(filtro.getDescritorId()); 
-			SearchCriteria sc = new SearchCriteria("descritores",":",d); 
+			Descritor d = descritorService.findById(filtro.getDescritorId());
+			List<Descritor> descritores = new ArrayList();
+			descritores.add(d);
+			SearchCriteria sc = new SearchCriteria("descritores","in",descritores); 
 			criterios.add(sc); 
 		}
 
