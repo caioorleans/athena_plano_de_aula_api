@@ -1,6 +1,7 @@
 package com.athena.plano_de_aula.api.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +60,7 @@ public class PlanoDeAulaService {
 		plano.setDescritores(descritores);
 		plano.setRecursos(recursos);
 		plano.setPlataforma(form.getPlataforma().toUpperCase());
-		plano.setEhPublico(false);
+		plano.setPublico(false);
 		
 		repository.save(plano);
 	}
@@ -90,7 +91,7 @@ public class PlanoDeAulaService {
 		plano.setDescritores(descritores);
 		plano.setRecursos(recursos);
 		plano.setPlataforma(form.getPlataforma().toUpperCase());
-		plano.setEhPublico(false);
+		plano.setPublico(false);
 		plano.setId(form.getId());
 		
 		repository.save(plano);
@@ -140,25 +141,48 @@ public class PlanoDeAulaService {
 	 * 
 	 * return planosDTO; }
 	 */
+	
+	public void updatePublico(Integer id) {
+		PlanoDeAula plano = findById(id);
+		
+		plano.setPublico(plano.getPublico() == true ? false : true);
+		
+		repository.save(plano);
+	}
 	  
 	public List<PlanoDeAula> findByFiltro(FiltroDTO filtro){
-
-		List<PlanoDeAulaDTO> planosDTO = new ArrayList<PlanoDeAulaDTO>();
-
-		PlanoSpecificationsBuilder builder = new PlanoSpecificationsBuilder();
-
-		List<SearchCriteria> criterios = buildCriteria(filtro);
-
-		for(SearchCriteria sc : criterios) {
-			builder.with(sc.getKey(),sc.getOperation(),sc.getValue()); 
+		if(filtro.getDescritorId()!= null) {
+			Descritor d = descritorService.findById(filtro.getDescritorId());
+			if(filtro.getAno() != null && filtro.getPlataforma() != null) {
+				return repository.findByDescritoresAndAnoAndPlataformaLikeAndPublico(d,filtro.getAno(),filtro.getPlataforma(),true);
+			}
+			else {
+				if(filtro.getAno() != null) {
+					return repository.findByDescritoresAndAnoAndPublico(d, filtro.getAno(), true);
+				}
+				if(filtro.getPlataforma() != null) {
+					return repository.findByDescritoresAndPlataformaLikeAndPublico(d, filtro.getPlataforma(), true);
+				}
+				return repository.findByDescritoresAndPublico(d, true);
+			}
+			
 		}
+		else {
+			PlanoSpecificationsBuilder builder = new PlanoSpecificationsBuilder();
 
-		Specification<PlanoDeAula> spec = builder.build();
+			List<SearchCriteria> criterios = buildCriteria(filtro);
 
-		List<PlanoDeAula> planos = repository.findAll(spec);
+			for(SearchCriteria sc : criterios) {
+				builder.with(sc.getKey(),sc.getOperation(),sc.getValue()); 
+			}
 
+			Specification<PlanoDeAula> spec = builder.build();
+
+			List<PlanoDeAula> planos = repository.findAll(spec);
+
+			return planos; 
+		}
 		
-		return planos; 
 	}
 	  
 	private List<SearchCriteria> buildCriteria(FiltroDTO filtro){
@@ -179,7 +203,7 @@ public class PlanoDeAulaService {
 		}
 		if(filtro.getDescritorId()!=null) { 
 			Descritor d = descritorService.findById(filtro.getDescritorId());
-			List<Descritor> descritores = new ArrayList();
+			Collection descritores = new ArrayList();
 			descritores.add(d);
 			SearchCriteria sc = new SearchCriteria("descritores","in",descritores); 
 			criterios.add(sc); 

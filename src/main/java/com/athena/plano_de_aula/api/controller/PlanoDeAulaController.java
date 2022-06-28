@@ -77,6 +77,11 @@ public class PlanoDeAulaController {
 		return service.findByFiltro(filtro);
 	}
 	
+	@PostMapping("alterarVisibilidade")
+	public void updatePublico(@RequestBody Integer id) {
+		service.updatePublico(id);
+	}
+	
 	@GetMapping(path = "/pdf/{id}")
     public ResponseEntity<?> getPDF(@PathVariable Integer id, HttpServletRequest request, HttpServletResponse response) throws IOException {
 

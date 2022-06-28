@@ -10,6 +10,7 @@ import javax.persistence.criteria.Root;
 
 import org.springframework.data.jpa.domain.Specification;
 
+import com.athena.plano_de_aula.api.model.Descritor;
 import com.athena.plano_de_aula.api.model.PlanoDeAula;
 
 public class PlanoSpecification implements Specification<PlanoDeAula>{
@@ -34,7 +35,7 @@ public class PlanoSpecification implements Specification<PlanoDeAula>{
             }
         }
         else if(criteria.getOperation().equalsIgnoreCase("in")) {
-        	return builder.in(root.get(criteria.getKey())).value( criteria.getValue());
+        	return builder.in(root.get(criteria.getKey())).value(criteria.getValue());
         }
         return null;
     }

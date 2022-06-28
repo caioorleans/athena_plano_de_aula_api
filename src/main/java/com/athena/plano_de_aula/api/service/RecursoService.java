@@ -60,6 +60,6 @@ public class RecursoService {
 	}
 	
 	public List<Recurso> findByTitulo(String titulo){
-		return repository.findByTituloContaining(titulo);
+		return repository.findByTituloIgnoreCaseContaining(titulo);
 	}
 }

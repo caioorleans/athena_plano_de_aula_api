@@ -34,7 +34,7 @@ public class PlanoDeAula {
 	
 	private Integer ano;
 	
-	private Boolean ehPublico;
+	private Boolean publico;
 	
 	@ManyToOne
 	private Disciplina disciplina;
@@ -67,11 +67,11 @@ public class PlanoDeAula {
 	public void setRecursos(List<Recurso> recursos) {
 		this.recursos = recursos;
 	}
-	public Boolean getEhPublico() {
-		return ehPublico;
+	public Boolean getPublico() {
+		return publico;
 	}
-	public void setEhPublico(Boolean ehPublico) {
-		this.ehPublico = ehPublico;
+	public void setPublico(Boolean publico) {
+		this.publico = publico;
 	}
 	public Integer getId() {
 		return id;
