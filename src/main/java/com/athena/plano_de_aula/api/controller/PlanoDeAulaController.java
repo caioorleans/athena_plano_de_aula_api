@@ -27,6 +27,7 @@ import org.thymeleaf.context.WebContext;
 import com.athena.plano_de_aula.api.dto.FiltroDTO;
 import com.athena.plano_de_aula.api.dto.PlanoFormulario;
 import com.athena.plano_de_aula.api.model.PlanoDeAula;
+import com.athena.plano_de_aula.api.service.PdfService;
 import com.athena.plano_de_aula.api.service.PlanoDeAulaService;
 import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
@@ -37,6 +38,9 @@ public class PlanoDeAulaController {
 
 	@Autowired
 	private PlanoDeAulaService service;
+	
+	@Autowired
+	private PdfService pdfService;
 	
 	@Autowired
     ServletContext servletContext;
@@ -82,37 +86,19 @@ public class PlanoDeAulaController {
 		service.updatePublico(id);
 	}
 	
-	@GetMapping(path = "/pdf/{id}")
+	@GetMapping(path = "/downloadPdf/{id}")
     public ResponseEntity<?> getPDF(@PathVariable Integer id, HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-        /* Do Business Logic*/
-
         PlanoDeAula plano = service.findById(id);
-
-        /* Create HTML using Thymeleaf template Engine */
-
-        WebContext context = new WebContext(request, response, servletContext);
-        context.setVariable("plano", plano);
-        String orderHtml = templateEngine.process("plano", context);
-
-        /* Setup Source and target I/O streams */
-
-        ByteArrayOutputStream target = new ByteArrayOutputStream();
-        ConverterProperties converterProperties = new ConverterProperties();
-        converterProperties.setBaseUri("http://localhost:8080");
-        /* Call convert method */
-        HtmlConverter.convertToPdf(orderHtml, target, converterProperties);
-
-        /* extract output as bytes */
-        byte[] bytes = target.toByteArray();
-
-
-        /* Send the response as downloadable PDF */
-
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=plano_de_aula.pdf")
-                .contentType(MediaType.APPLICATION_PDF)
-                .body(bytes);
-
+        String planoHtml = pdfService.toHtml(plano, request, response, servletContext);
+        byte[] bytes = pdfService.createPdf(planoHtml);
+        return pdfService.download(bytes);
     }
+	
+	@GetMapping(path = "/verPdf/{id}")
+    public ResponseEntity<?> viewPDF(@PathVariable Integer id, HttpServletRequest request, HttpServletResponse response) throws IOException {
+		PlanoDeAula plano = service.findById(id);
+		String planoHtml = pdfService.toHtml(plano, request, response, servletContext);
+        byte[] bytes = pdfService.createPdf(planoHtml);
+		return pdfService.view(bytes);
+	}
 }
