@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +25,8 @@ import org.thymeleaf.TemplateEngine;
 
 import com.athena.plano_de_aula.api.dto.PlanoFormulario;
 import com.athena.plano_de_aula.api.model.PlanoDeAula;
+import com.athena.plano_de_aula.api.model.Plataforma;
+import com.athena.plano_de_aula.api.model.RecursoId;
 import com.athena.plano_de_aula.api.service.PdfService;
 import com.athena.plano_de_aula.api.service.PlanoDeAulaService;
 
@@ -61,9 +64,9 @@ public class PlanoDeAulaController {
 		service.update(form);
 	}
 	
-	@GetMapping("procurarPorTituloRecurso/{titulo}")
-	public List<PlanoDeAula> findByTituloRecurso(@PathVariable String titulo){
-		return service.findByRecursos(titulo);
+	@GetMapping("procurarPorTituloRecurso/{pag}/{titulo}")
+	public Page<PlanoDeAula> findByTituloRecurso(@PathVariable Integer pag, @PathVariable String titulo){
+		return service.findByRecursos(pag, titulo);
 	}
 	
 	@DeleteMapping("apagar")
@@ -72,7 +75,7 @@ public class PlanoDeAulaController {
 	}
 	
 	@GetMapping("procurarPorFiltro/{pag}/{filtro}")
-	public List<PlanoDeAula> findByFiltro(@PathVariable Integer pag, @PathVariable String filtro){
+	public Page<PlanoDeAula> findByFiltro(@PathVariable Integer pag, @PathVariable String filtro){
 		Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),", Pattern.UNICODE_CHARACTER_CLASS);
 		Matcher matcher = pattern.matcher(filtro + ",");
 		return service.findByFiltro(pag, matcher);
@@ -81,6 +84,19 @@ public class PlanoDeAulaController {
 	@PostMapping("alterarVisibilidade")
 	public void updatePublico(@RequestBody Integer id) {
 		service.updatePublico(id);
+	}
+	
+	@GetMapping("procurarPrivados/{pag}")
+	public Page<PlanoDeAula> getPrivate(@PathVariable Integer pag){
+		return service.findPrivate(pag);
+	}
+	
+	@GetMapping("procurarPorRecursoId/{pag}/{plataforma}/id")
+	public Page<PlanoDeAula> getByRecursoId(@PathVariable Integer pag,  @PathVariable Plataforma plataforma, @PathVariable Integer id){
+		RecursoId rId = new RecursoId();
+		rId.setRecursoId(id);
+		rId.setRecursoPlataforma(plataforma);
+		return service.findByRecurso(rId, pag);
 	}
 	
 	@GetMapping(path = "/downloadPdf/{id}")

@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -115,36 +116,21 @@ public class PlanoDeAulaService {
 		repository.delete(plano);
 	}
 	
-	public List<PlanoDeAula> findByRecursos(String titulo){
-		List<Recurso> recursos = recursoService.findByTitulo(titulo);
-		if(recursos == null || recursos.isEmpty()) {
-			return new ArrayList<PlanoDeAula>();
-		}
-		else {
-			return repository.findByRecursosIn(recursos);
-		}
+	public Page<PlanoDeAula> findPrivate(Integer pag) {
+		Pageable pageable = PageRequest.of(pag, 10);
+		return repository.findByPublico(false, pageable);
 	}
 	
-	/*
-	 * public List<PlanoDeAulaDTO> findByFiltro(String search) {
-	 * 
-	 * List<PlanoDeAulaDTO> planosDTO = new ArrayList<PlanoDeAulaDTO>();
-	 * 
-	 * PlanoSpecificationsBuilder builder = new PlanoSpecificationsBuilder();
-	 * 
-	 * Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),",
-	 * Pattern.UNICODE_CHARACTER_CLASS); Matcher matcher = pattern.matcher(search +
-	 * ","); while (matcher.find()) { builder.with(matcher.group(1),
-	 * matcher.group(2), matcher.group(3)); }
-	 * 
-	 * Specification<PlanoDeAula> spec = builder.build();
-	 * 
-	 * List<PlanoDeAula> planos = repository.findAll(spec);
-	 * 
-	 * for (PlanoDeAula p : planos) { planosDTO.add(new PlanoDeAulaDTO(p)); }
-	 * 
-	 * return planosDTO; }
-	 */
+	public Page<PlanoDeAula> findByRecursos(Integer pag, String titulo){
+		List<Recurso> recursos = recursoService.findByTitulo(titulo);
+		Pageable pageable = PageRequest.of(pag, 10);
+		if(recursos == null || recursos.isEmpty()) {
+			return new PageImpl<>(new ArrayList<PlanoDeAula>());
+		}
+		else {
+			return repository.findByRecursosIn(recursos, pageable);
+		}
+	}
 	
 	public void updatePublico(Integer id) {
 		PlanoDeAula plano = findById(id);
@@ -154,7 +140,12 @@ public class PlanoDeAulaService {
 		repository.save(plano);
 	}
 	  
-	public List<PlanoDeAula> findByFiltro(Integer pag, Matcher matcher){
+	public Page<PlanoDeAula> findByRecurso(RecursoId rId, Integer pag){
+		Pageable pageable = PageRequest.of(pag, 10);
+		return repository.findByRecursos(recursoService.findById(rId), pageable);
+	}
+	
+	public Page<PlanoDeAula> findByFiltro(Integer pag, Matcher matcher){
 		FiltroDTO filtro = new FiltroDTO();
 		Pageable pageable = PageRequest.of(pag, 10);
 		while(matcher.find()) {
@@ -205,7 +196,7 @@ public class PlanoDeAulaService {
 
 			Specification<PlanoDeAula> spec = builder.build();
 
-			List<PlanoDeAula> planos = repository.findAll(spec, pageable).getContent();
+			Page<PlanoDeAula> planos = repository.findAll(spec, pageable);
 
 			return planos; 
 		}
@@ -239,17 +230,4 @@ public class PlanoDeAulaService {
 		return criterios; 
 	}
 
-	/*
-	 * public List<PlanoDeAulaDTO> findByRecurso(String plataforma, Integer recurso,
-	 * Pageable pageable) {
-	 * 
-	 * List<PlanoDeAulaDTO> planosDTO = new ArrayList<PlanoDeAulaDTO>();
-	 * List<PlanoDeAula> planos =
-	 * repository.findByRecursosAndPlataforma(recurso,nplataforma.toUpperCase(),
-	 * pageable);
-	 * 
-	 * for (PlanoDeAula p : planos) { planosDTO.add(new PlanoDeAulaDTO(p)); }
-	 * 
-	 * return planosDTO; }
-	 */
 }
