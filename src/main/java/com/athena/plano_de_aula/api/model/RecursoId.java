@@ -10,12 +10,12 @@ public class RecursoId implements Serializable{
 	@NotNull
 	private Integer recursoId;
 	@NotNull
-	private String recursoPlataforma;
+	private Plataforma recursoPlataforma;
 	
 	public RecursoId() {
 	}
 	
-	public RecursoId(Integer recursoId, String recursoPlataforma) {
+	public RecursoId(Integer recursoId, Plataforma recursoPlataforma) {
 		super();
 		this.recursoId = recursoId;
 		this.recursoPlataforma = recursoPlataforma;
@@ -27,10 +27,10 @@ public class RecursoId implements Serializable{
 	public void setRecursoId(Integer recursoId) {
 		this.recursoId = recursoId;
 	}
-	public String getRecursoPlataforma() {
+	public Plataforma getRecursoPlataforma() {
 		return recursoPlataforma;
 	}
-	public void setRecursoPlataforma(String recursoPlataforma) {
+	public void setRecursoPlataforma(Plataforma recursoPlataforma) {
 		this.recursoPlataforma = recursoPlataforma;
 	}
 	

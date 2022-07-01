@@ -2,13 +2,15 @@ package com.athena.plano_de_aula.api.dto;
 
 import javax.validation.constraints.NotNull;
 
+import com.athena.plano_de_aula.api.model.Plataforma;
+
 public class RecursoFormulario {
 	
 	@NotNull
 	private Integer id;
 	
 	@NotNull
-	private String plataforma;
+	private Plataforma plataforma;
 	
 	@NotNull
 	private String titulo;
@@ -28,10 +30,10 @@ public class RecursoFormulario {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getPlataforma() {
+	public Plataforma getPlataforma() {
 		return plataforma;
 	}
-	public void setPlataforma(String plataforma) {
+	public void setPlataforma(Plataforma plataforma) {
 		this.plataforma = plataforma;
 	}
 	public String getTitulo() {

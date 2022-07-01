@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import com.athena.plano_de_aula.api.model.Plataforma;
 import com.athena.plano_de_aula.api.model.RecursoId;
 
 public class PlanoFormulario {
@@ -11,7 +12,7 @@ public class PlanoFormulario {
 	@NotNull
 	private Integer id;
 	@NotNull
-	private String plataforma;
+	private Plataforma plataforma;
 	@NotNull
 	private String titulo;
 	@NotNull
@@ -39,10 +40,10 @@ public class PlanoFormulario {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getPlataforma() {
+	public Plataforma getPlataforma() {
 		return plataforma;
 	}
-	public void setPlataforma(String plataforma) {
+	public void setPlataforma(Plataforma plataforma) {
 		this.plataforma = plataforma;
 	}
 	public String getTitulo() {

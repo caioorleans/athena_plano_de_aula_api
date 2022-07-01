@@ -1,8 +1,9 @@
 package com.athena.plano_de_aula.api.controller;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -10,8 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,15 +21,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
 
-import com.athena.plano_de_aula.api.dto.FiltroDTO;
 import com.athena.plano_de_aula.api.dto.PlanoFormulario;
 import com.athena.plano_de_aula.api.model.PlanoDeAula;
 import com.athena.plano_de_aula.api.service.PdfService;
 import com.athena.plano_de_aula.api.service.PlanoDeAulaService;
-import com.itextpdf.html2pdf.ConverterProperties;
-import com.itextpdf.html2pdf.HtmlConverter;
 
 @RestController
 @RequestMapping("/planosDeAula")
@@ -76,9 +71,11 @@ public class PlanoDeAulaController {
 		service.delete(id);
 	}
 	
-	@PostMapping("procurarPorFiltro")
-	public List<PlanoDeAula> findByFiltro(@RequestBody FiltroDTO filtro){
-		return service.findByFiltro(filtro);
+	@GetMapping("procurarPorFiltro/{pag}/{filtro}")
+	public List<PlanoDeAula> findByFiltro(@PathVariable Integer pag, @PathVariable String filtro){
+		Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),", Pattern.UNICODE_CHARACTER_CLASS);
+		Matcher matcher = pattern.matcher(filtro + ",");
+		return service.findByFiltro(pag, matcher);
 	}
 	
 	@PostMapping("alterarVisibilidade")

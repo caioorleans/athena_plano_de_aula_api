@@ -3,18 +3,22 @@ package com.athena.plano_de_aula.api.service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Matcher;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.athena.plano_de_aula.api.dto.FiltroDTO;
-import com.athena.plano_de_aula.api.dto.PlanoDeAulaDTO;
 import com.athena.plano_de_aula.api.dto.PlanoFormulario;
 import com.athena.plano_de_aula.api.exceptionhandler.ProductNotFoundException;
 import com.athena.plano_de_aula.api.model.Descritor;
 import com.athena.plano_de_aula.api.model.Disciplina;
 import com.athena.plano_de_aula.api.model.PlanoDeAula;
+import com.athena.plano_de_aula.api.model.Plataforma;
 import com.athena.plano_de_aula.api.model.Recurso;
 import com.athena.plano_de_aula.api.model.RecursoId;
 import com.athena.plano_de_aula.api.repository.PlanoDeAulaRepository;
@@ -59,7 +63,7 @@ public class PlanoDeAulaService {
 		plano.setDisciplina(disciplina);
 		plano.setDescritores(descritores);
 		plano.setRecursos(recursos);
-		plano.setPlataforma(form.getPlataforma().toUpperCase());
+		plano.setPlataforma(form.getPlataforma());
 		plano.setPublico(false);
 		
 		repository.save(plano);
@@ -90,7 +94,7 @@ public class PlanoDeAulaService {
 		plano.setDisciplina(disciplina);
 		plano.setDescritores(descritores);
 		plano.setRecursos(recursos);
-		plano.setPlataforma(form.getPlataforma().toUpperCase());
+		plano.setPlataforma(form.getPlataforma());
 		plano.setPublico(false);
 		plano.setId(form.getId());
 		
@@ -150,20 +154,43 @@ public class PlanoDeAulaService {
 		repository.save(plano);
 	}
 	  
-	public List<PlanoDeAula> findByFiltro(FiltroDTO filtro){
+	public List<PlanoDeAula> findByFiltro(Integer pag, Matcher matcher){
+		FiltroDTO filtro = new FiltroDTO();
+		Pageable pageable = PageRequest.of(pag, 10);
+		while(matcher.find()) {
+			switch (matcher.group(1)) {
+			case "ano":
+				filtro.setAno(Integer.parseInt(matcher.group(3)));
+				break;
+			case "disciplinaId":
+				filtro.setDisciplinaId(Integer.parseInt(matcher.group(3)));
+				break;
+			case "descritorId":
+				filtro.setDescritorId(matcher.group(3));
+				break;
+			case "plataforma":
+				if(matcher.group(3).equals("COMPUTADOR")) {
+					filtro.setPlataforma(Plataforma.COMPUTADOR);
+				}
+				else if(matcher.group(3).equals("MOBILE")) {
+					filtro.setPlataforma(Plataforma.MOBILE);
+				}
+			}
+			
+		}
 		if(filtro.getDescritorId()!= null) {
 			Descritor d = descritorService.findById(filtro.getDescritorId());
 			if(filtro.getAno() != null && filtro.getPlataforma() != null) {
-				return repository.findByDescritoresAndAnoAndPlataformaLikeAndPublico(d,filtro.getAno(),filtro.getPlataforma(),true);
+				return repository.findByDescritoresAndAnoAndPlataformaLikeAndPublico(d,filtro.getAno(),filtro.getPlataforma(),true, pageable);
 			}
 			else {
 				if(filtro.getAno() != null) {
-					return repository.findByDescritoresAndAnoAndPublico(d, filtro.getAno(), true);
+					return repository.findByDescritoresAndAnoAndPublico(d, filtro.getAno(), true, pageable);
 				}
 				if(filtro.getPlataforma() != null) {
-					return repository.findByDescritoresAndPlataformaLikeAndPublico(d, filtro.getPlataforma(), true);
+					return repository.findByDescritoresAndPlataformaLikeAndPublico(d, filtro.getPlataforma(), true, pageable);
 				}
-				return repository.findByDescritoresAndPublico(d, true);
+				return repository.findByDescritoresAndPublico(d, true, pageable);
 			}
 			
 		}
@@ -178,7 +205,7 @@ public class PlanoDeAulaService {
 
 			Specification<PlanoDeAula> spec = builder.build();
 
-			List<PlanoDeAula> planos = repository.findAll(spec);
+			List<PlanoDeAula> planos = repository.findAll(spec, pageable).getContent();
 
 			return planos; 
 		}
@@ -193,7 +220,7 @@ public class PlanoDeAulaService {
 			criterios.add(sc); 
 		} 
 		if(filtro.getPlataforma()!=null) {
-			SearchCriteria sc = new SearchCriteria("plataforma",":",filtro.getPlataforma().toUpperCase());
+			SearchCriteria sc = new SearchCriteria("plataforma",":",filtro.getPlataforma());
 			criterios.add(sc); 
 		}
 		if(filtro.getDisciplinaId()!=null) { 

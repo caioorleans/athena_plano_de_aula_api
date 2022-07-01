@@ -36,7 +36,7 @@ public class RecursoService {
 		RecursoId rId = new RecursoId();
 		
 		rId.setRecursoId(recurso.getId());
-		rId.setRecursoPlataforma(recurso.getPlataforma().toUpperCase());
+		rId.setRecursoPlataforma(recurso.getPlataforma());
 		
 		novoRecurso.setId(rId);
 		novoRecurso.setTitulo(recurso.getTitulo());
@@ -49,7 +49,7 @@ public class RecursoService {
 	}
 	
 	public void update(RecursoFormulario recurso) {
-		recurso.setPlataforma(recurso.getPlataforma().toUpperCase());
+		recurso.setPlataforma(recurso.getPlataforma());
 		findById(new RecursoId(recurso.getId(),recurso.getPlataforma()));
 		save(recurso);
 	}
