@@ -64,7 +64,7 @@ public class PlanoDeAulaController {
 		service.update(form);
 	}
 	
-	@GetMapping("procurarPorTituloRecurso/{pag}/{titulo}")
+	@GetMapping("buscaSimples/{pag}/{titulo}")
 	public Page<PlanoDeAula> findByTituloRecurso(@PathVariable Integer pag, @PathVariable String titulo){
 		return service.findByRecursos(pag, titulo);
 	}
@@ -74,14 +74,14 @@ public class PlanoDeAulaController {
 		service.delete(id);
 	}
 	
-	@GetMapping("procurarPorFiltro/{pag}/{filtro}")
+	@GetMapping("buscaAvançada/{pag}/{filtro}")
 	public Page<PlanoDeAula> findByFiltro(@PathVariable Integer pag, @PathVariable String filtro){
 		Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),", Pattern.UNICODE_CHARACTER_CLASS);
 		Matcher matcher = pattern.matcher(filtro + ",");
 		return service.findByFiltro(pag, matcher);
 	}
 	
-	@PostMapping("alterarVisibilidade")
+	@PutMapping("alterarVisibilidade")
 	public void updatePublico(@RequestBody Integer id) {
 		service.updatePublico(id);
 	}
@@ -91,7 +91,7 @@ public class PlanoDeAulaController {
 		return service.findPrivate(pag);
 	}
 	
-	@GetMapping("procurarPorRecursoId/{pag}/{plataforma}/id")
+	@GetMapping("procurarPorRecursoId/{pag}/{plataforma}/{id}")
 	public Page<PlanoDeAula> getByRecursoId(@PathVariable Integer pag,  @PathVariable Plataforma plataforma, @PathVariable Integer id){
 		RecursoId rId = new RecursoId();
 		rId.setRecursoId(id);

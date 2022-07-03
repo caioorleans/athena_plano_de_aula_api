@@ -128,7 +128,7 @@ public class PlanoDeAulaService {
 			return new PageImpl<>(new ArrayList<PlanoDeAula>());
 		}
 		else {
-			return repository.findByRecursosIn(recursos, pageable);
+			return repository.findByRecursosInAndPublico(recursos, true, pageable);
 		}
 	}
 	

@@ -14,7 +14,7 @@ import com.athena.plano_de_aula.api.model.Recurso;
 
 public interface PlanoDeAulaRepository extends JpaRepository<PlanoDeAula, Integer>, JpaSpecificationExecutor<PlanoDeAula>{
 	
-	public Page<PlanoDeAula> findByRecursosIn(List<Recurso> recursos, Pageable pageable);
+	public Page<PlanoDeAula> findByRecursosInAndPublico(List<Recurso> recursos, boolean publico, Pageable pageable);
 	
 	public Page<PlanoDeAula> findByRecursos(Recurso recursos, Pageable pageable);
 	
