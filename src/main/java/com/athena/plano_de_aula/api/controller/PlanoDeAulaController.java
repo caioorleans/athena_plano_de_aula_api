@@ -13,6 +13,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,26 +55,31 @@ public class PlanoDeAulaController {
 		return service.findAll();
 	}
 	
+	@PreAuthorize("permitAll")
 	@PostMapping("salvar")
 	public void save(@Valid @RequestBody PlanoFormulario form) {
 		service.save(form);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PutMapping("atualizar")
 	public void update(@Valid @RequestBody PlanoFormulario form) {
 		service.update(form);
 	}
 	
+	@PreAuthorize("permitAll")
 	@GetMapping("buscaSimples/{pag}/{titulo}")
 	public Page<PlanoDeAula> findByTituloRecurso(@PathVariable Integer pag, @PathVariable String titulo){
 		return service.findByRecursos(pag, titulo);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("apagar")
 	public void update(Integer id) {
 		service.delete(id);
 	}
 	
+	@PreAuthorize("permitAll")
 	@GetMapping("buscaAvançada/{pag}/{filtro}")
 	public Page<PlanoDeAula> findByFiltro(@PathVariable Integer pag, @PathVariable String filtro){
 		Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),", Pattern.UNICODE_CHARACTER_CLASS);
@@ -81,16 +87,19 @@ public class PlanoDeAulaController {
 		return service.findByFiltro(pag, matcher);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PutMapping("alterarVisibilidade")
 	public void updatePublico(@RequestBody Integer id) {
 		service.updatePublico(id);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping("procurarPrivados/{pag}")
 	public Page<PlanoDeAula> getPrivate(@PathVariable Integer pag){
 		return service.findPrivate(pag);
 	}
 	
+	@PreAuthorize("permitAll")
 	@GetMapping("procurarPorRecursoId/{pag}/{plataforma}/{id}")
 	public Page<PlanoDeAula> getByRecursoId(@PathVariable Integer pag,  @PathVariable Plataforma plataforma, @PathVariable Integer id){
 		RecursoId rId = new RecursoId();
@@ -99,6 +108,7 @@ public class PlanoDeAulaController {
 		return service.findByRecurso(rId, pag);
 	}
 	
+	@PreAuthorize("permitAll")
 	@GetMapping(path = "/downloadPdf/{id}")
     public ResponseEntity<?> getPDF(@PathVariable Integer id, HttpServletRequest request, HttpServletResponse response) throws IOException {
         PlanoDeAula plano = service.findById(id);
@@ -107,6 +117,7 @@ public class PlanoDeAulaController {
         return pdfService.download(bytes);
     }
 	
+	@PreAuthorize("permitAll")
 	@GetMapping(path = "/verPdf/{id}")
     public ResponseEntity<?> viewPDF(@PathVariable Integer id, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		PlanoDeAula plano = service.findById(id);

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,26 +27,31 @@ public class RecursoController {
 	@Autowired
 	private RecursoService service;
 	
+	@PreAuthorize("permitAll")
 	@GetMapping
 	public List<Recurso> findAll(){
 		return service.findAll();
 	}
 	
+	@PreAuthorize("permitAll")
 	@GetMapping("/buscarPorId/{id}")
 	public Recurso findById(@PathVariable RecursoId id) {
 		return findById(id);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping("/salvar")
 	public void save(@Valid @RequestBody RecursoFormulario r) {
 		service.save(r);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PutMapping("/atualizar")
 	public void update(@Valid @RequestBody RecursoFormulario r) {
 		service.update(r);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/apagar")
 	public void delete(@Valid @RequestBody RecursoId id) {
 		service.delete(id);

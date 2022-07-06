@@ -1,5 +1,6 @@
 package com.athena.plano_de_aula.api.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -15,6 +16,7 @@ public class Descritor {
 	@Id
 	private String id;
 	
+	@Column(length = 100)
 	private String descricao;
 	
 	@ManyToOne

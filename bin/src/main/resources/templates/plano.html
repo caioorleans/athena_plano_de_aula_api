@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plano de Aula</title>
+</head>
+
+<body>
+    <div>
+        <h1>Plano de Aula</h1>
+        <h2 th:text="${plano.titulo}"></h2>
+        <div>
+            <h3>Autor:</h3>
+            <p th:text="${plano.autor}"></p>
+        </div>
+
+        <div>
+            <h3>Disciplina:</h3>
+            <p th:text="${plano.disciplina.descricao}"></p>
+        </div>
+
+        <div>
+            <h3>Ano recomendado:</h3>
+            <p th:text="${plano.ano}"></p>
+        </div>
+
+        <div>
+            <h3>Descritores:</h3>
+            <ul th:each="descritor : ${plano.descritores}">
+                <li>
+                    <h4 th:text="${descritor.id}"></h4>
+                    <p th:text="${descritor.descricao}"></p>
+                </li>
+            </ul>
+        </div>
+
+        <div>
+            <h3>Recursos ultilizados:</h3>
+            <ul th:each="recurso : ${plano.recursos}">
+                <li th:text="${recurso.titulo}"></li>
+            </ul>
+        </div>
+
+        <div>
+            <h3>Passo a passo:</h3>
+            <p th:text="${plano.conteudo}"></p>
+        </div>
+    </div>
+</body>
+
+</html>

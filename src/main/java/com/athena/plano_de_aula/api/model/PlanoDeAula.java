@@ -23,7 +23,7 @@ public class PlanoDeAula {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(length = 60)
+	@Column(length = 100)
 	private String titulo;
 	
 	@Column(length = 2000)
