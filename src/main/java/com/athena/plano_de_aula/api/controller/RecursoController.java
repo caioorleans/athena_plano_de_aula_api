@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.athena.plano_de_aula.api.dto.RecursoFormulario;
+import com.athena.plano_de_aula.api.model.Plataforma;
 import com.athena.plano_de_aula.api.model.Recurso;
 import com.athena.plano_de_aula.api.model.RecursoId;
 import com.athena.plano_de_aula.api.service.RecursoService;
@@ -27,16 +28,24 @@ public class RecursoController {
 	@Autowired
 	private RecursoService service;
 	
-	@PreAuthorize("permitAll")
 	@GetMapping
 	public List<Recurso> findAll(){
 		return service.findAll();
 	}
 	
 	@PreAuthorize("permitAll")
-	@GetMapping("/buscarPorId/{id}")
-	public Recurso findById(@PathVariable RecursoId id) {
-		return findById(id);
+	@GetMapping("/buscarPorId/{id}/{plataforma}")
+	public Recurso findById(@PathVariable Integer id, Plataforma plataforma) {
+		RecursoId rId = new RecursoId();
+		rId.setRecursoId(id);
+		rId.setRecursoPlataforma(plataforma);
+		return service.findById(rId);
+	}
+	
+	@PreAuthorize("permitAll")
+	@GetMapping("/buscarPorDisciplina/{id}")
+	public List<Recurso> findByDisciplina(@PathVariable Integer id) {
+		return service.findByDisciplina(id);
 	}
 	
 	@PreAuthorize("hasAnyRole('ADMIN')")

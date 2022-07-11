@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.athena.plano_de_aula.api.dto.RecursoFormulario;
 import com.athena.plano_de_aula.api.exceptionhandler.ProductNotFoundException;
 import com.athena.plano_de_aula.api.model.Disciplina;
+import com.athena.plano_de_aula.api.model.Plataforma;
 import com.athena.plano_de_aula.api.model.Recurso;
 import com.athena.plano_de_aula.api.model.RecursoId;
 import com.athena.plano_de_aula.api.repository.RecursoRepository;
@@ -61,5 +62,10 @@ public class RecursoService {
 	
 	public List<Recurso> findByTitulo(String titulo){
 		return repository.findByTituloIgnoreCaseContaining(titulo);
+	}
+	
+	public List<Recurso> findByDisciplina(Integer id){
+		Disciplina d = disciplinaService.findById(id);
+		return repository.findByDisciplinaOrderByTituloAsc(d);
 	}
 }

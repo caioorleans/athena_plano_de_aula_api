@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -104,7 +105,7 @@ public class PlanoDeAulaService {
 	}
 	
 	public PlanoDeAula findById(Integer id) {
-		return repository.findById(id).orElseThrow(()-> new ProductNotFoundException());
+		return repository.findByIdAndPublico(id, true).orElseThrow(()-> new ProductNotFoundException());
 	}
 	
 	public List<PlanoDeAula> findAll(){
@@ -117,13 +118,13 @@ public class PlanoDeAulaService {
 	}
 	
 	public Page<PlanoDeAula> findPrivate(Integer pag) {
-		Pageable pageable = PageRequest.of(pag, 10);
+		Pageable pageable = PageRequest.of(pag, 8, Sort.by("id"));
 		return repository.findByPublico(false, pageable);
 	}
 	
 	public Page<PlanoDeAula> findByRecursos(Integer pag, String titulo){
 		List<Recurso> recursos = recursoService.findByTitulo(titulo);
-		Pageable pageable = PageRequest.of(pag, 10);
+		Pageable pageable = PageRequest.of(pag, 8, Sort.by("id"));
 		if(recursos == null || recursos.isEmpty()) {
 			return new PageImpl<>(new ArrayList<PlanoDeAula>());
 		}
@@ -141,13 +142,13 @@ public class PlanoDeAulaService {
 	}
 	  
 	public Page<PlanoDeAula> findByRecurso(RecursoId rId, Integer pag){
-		Pageable pageable = PageRequest.of(pag, 10);
+		Pageable pageable = PageRequest.of(pag, 8, Sort.by("id"));
 		return repository.findByRecursos(recursoService.findById(rId), pageable);
 	}
 	
 	public Page<PlanoDeAula> findByFiltro(Integer pag, Matcher matcher){
 		FiltroDTO filtro = new FiltroDTO();
-		Pageable pageable = PageRequest.of(pag, 10);
+		Pageable pageable = PageRequest.of(pag, 8, Sort.by("id"));
 		while(matcher.find()) {
 			switch (matcher.group(1)) {
 			case "ano":

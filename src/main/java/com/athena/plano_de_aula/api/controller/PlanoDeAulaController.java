@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.thymeleaf.TemplateEngine;
 
+import com.athena.plano_de_aula.api.dto.PlanoDTO;
 import com.athena.plano_de_aula.api.dto.PlanoFormulario;
 import com.athena.plano_de_aula.api.model.PlanoDeAula;
 import com.athena.plano_de_aula.api.model.Plataforma;
@@ -56,6 +57,12 @@ public class PlanoDeAulaController {
 	}
 	
 	@PreAuthorize("permitAll")
+	@GetMapping("buscarPorId/{id}")
+	public PlanoDeAula findById(@PathVariable Integer id) {
+		return service.findById(id);
+	}
+	
+	@PreAuthorize("permitAll")
 	@PostMapping("salvar")
 	public void save(@Valid @RequestBody PlanoFormulario form) {
 		service.save(form);
@@ -69,8 +76,9 @@ public class PlanoDeAulaController {
 	
 	@PreAuthorize("permitAll")
 	@GetMapping("buscaSimples/{pag}/{titulo}")
-	public Page<PlanoDeAula> findByTituloRecurso(@PathVariable Integer pag, @PathVariable String titulo){
-		return service.findByRecursos(pag, titulo);
+	public Page<PlanoDTO> findByTituloRecurso(@PathVariable Integer pag, @PathVariable String titulo){
+		Page<PlanoDTO> planos = service.findByRecursos(pag, titulo).map(x -> new PlanoDTO(x));
+		return planos;
 	}
 	
 	@PreAuthorize("hasAnyRole('ADMIN')")
@@ -81,10 +89,11 @@ public class PlanoDeAulaController {
 	
 	@PreAuthorize("permitAll")
 	@GetMapping("buscaAvançada/{pag}/{filtro}")
-	public Page<PlanoDeAula> findByFiltro(@PathVariable Integer pag, @PathVariable String filtro){
+	public Page<PlanoDTO> findByFiltro(@PathVariable Integer pag, @PathVariable String filtro){
 		Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),", Pattern.UNICODE_CHARACTER_CLASS);
 		Matcher matcher = pattern.matcher(filtro + ",");
-		return service.findByFiltro(pag, matcher);
+		Page<PlanoDTO> planos = service.findByFiltro(pag, matcher).map(x -> new PlanoDTO(x));
+		return planos;
 	}
 	
 	@PreAuthorize("hasAnyRole('ADMIN')")
@@ -95,17 +104,19 @@ public class PlanoDeAulaController {
 	
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping("procurarPrivados/{pag}")
-	public Page<PlanoDeAula> getPrivate(@PathVariable Integer pag){
-		return service.findPrivate(pag);
+	public Page<PlanoDTO> getPrivate(@PathVariable Integer pag){
+		Page<PlanoDTO> planos = service.findPrivate(pag).map(x -> new PlanoDTO(x));
+		return planos;
 	}
 	
 	@PreAuthorize("permitAll")
 	@GetMapping("procurarPorRecursoId/{pag}/{plataforma}/{id}")
-	public Page<PlanoDeAula> getByRecursoId(@PathVariable Integer pag,  @PathVariable Plataforma plataforma, @PathVariable Integer id){
+	public Page<PlanoDTO> getByRecursoId(@PathVariable Integer pag,  @PathVariable Plataforma plataforma, @PathVariable Integer id){
 		RecursoId rId = new RecursoId();
 		rId.setRecursoId(id);
 		rId.setRecursoPlataforma(plataforma);
-		return service.findByRecurso(rId, pag);
+		Page<PlanoDTO> planos = service.findByRecurso(rId, pag).map(x -> new PlanoDTO(x));
+		return planos;
 	}
 	
 	@PreAuthorize("permitAll")

@@ -1,6 +1,7 @@
 package com.athena.plano_de_aula.api.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,7 +33,5 @@ public interface PlanoDeAulaRepository extends JpaRepository<PlanoDeAula, Intege
 	public Page<PlanoDeAula> findByDescritoresAndPublico(
 			Descritor descritores, Boolean publico, Pageable pageable);
 
-	//public List<PlanoDeAula> findByAnoAndTituloContains(Integer ano,String titulo, Pageable pageable);
-	
-	//public List<PlanoDeAula> findByRecursosAndPlataforma(Integer recursos, String Plataforma, Pageable pageable);
+	public Optional<PlanoDeAula> findByIdAndPublico(Integer id, Boolean publico);
 }
