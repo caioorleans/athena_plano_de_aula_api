@@ -2,10 +2,10 @@ package com.athena.plano_de_aula.api.model;
 
 import java.util.List;
 
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,7 +23,7 @@ public class PlanoDeAula {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(length = 60)
+	@Column(length = 100)
 	private String titulo;
 	
 	@Column(length = 2000)
@@ -32,48 +32,49 @@ public class PlanoDeAula {
 	@Column(length = 60)
 	private String autor;
 	
+	@Enumerated(EnumType.STRING)
+	private Plataforma plataforma;
+	
 	private Integer ano;
 	
-	private Boolean ehPublico;
-	
-	@Column(length = 10)
-	private String plataforma;
+	private Boolean publico;
 	
 	@ManyToOne
 	private Disciplina disciplina;
 	
 	@ManyToMany
-	@JoinTable(name="plano_possui_descritores",joinColumns={@JoinColumn(name="plano_id")}, inverseJoinColumns={@JoinColumn(name="descritor_id")})
+	@JoinTable(name="plano_possui_descritores",joinColumns={@JoinColumn(name="id_plano")}, inverseJoinColumns={@JoinColumn(name="id_descritor")})
 	private List<Descritor> descritores;
 	
-	@ElementCollection
-	@CollectionTable(name="plano_recurso", joinColumns=@JoinColumn(name="id_plano"))
-	@Column(name="id_recurso")
-	private List<Integer> recursos;
+	@ManyToMany
+	@JoinTable(name="plano_possui_recursos",joinColumns={@JoinColumn(name="id_plano")}, inverseJoinColumns={@JoinColumn(name="id_red"), @JoinColumn(name="plataforma_red")})
+	private List<Recurso> recursos;
 	
+	
+	
+	public Plataforma getPlataforma() {
+		return plataforma;
+	}
+	public void setPlataforma(Plataforma plataforma) {
+		this.plataforma = plataforma;
+	}
 	public Integer getAno() {
 		return ano;
 	}
 	public void setAno(Integer ano) {
 		this.ano = ano;
 	}
-	public String getPlataforma() {
-		return plataforma;
-	}
-	public void setPlataforma(String plataforma) {
-		this.plataforma = plataforma;
-	}
-	public List<Integer> getRecursos() {
+	public List<Recurso> getRecursos() {
 		return recursos;
 	}
-	public void setRecursos(List<Integer> recursos) {
+	public void setRecursos(List<Recurso> recursos) {
 		this.recursos = recursos;
 	}
-	public Boolean getEhPublico() {
-		return ehPublico;
+	public Boolean getPublico() {
+		return publico;
 	}
-	public void setEhPublico(Boolean ehPublico) {
-		this.ehPublico = ehPublico;
+	public void setPublico(Boolean publico) {
+		this.publico = publico;
 	}
 	public Integer getId() {
 		return id;

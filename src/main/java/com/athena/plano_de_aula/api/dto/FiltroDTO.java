@@ -1,17 +1,13 @@
 package com.athena.plano_de_aula.api.dto;
 
+import com.athena.plano_de_aula.api.model.Plataforma;
+
 public class FiltroDTO {
-	private String titulo;
 	private Integer ano;
 	private Integer disciplinaId;
 	private String descritorId;
-	private String plataforma;
-	public String getTitulo() {
-		return titulo;
-	}
-	public void setTitulo(String titulo) {
-		this.titulo = titulo;
-	}
+	private Plataforma plataforma;
+	
 	public Integer getAno() {
 		return ano;
 	}
@@ -30,10 +26,10 @@ public class FiltroDTO {
 	public void setDescritorId(String descritorId) {
 		this.descritorId = descritorId;
 	}
-	public String getPlataforma() {
+	public Plataforma getPlataforma() {
 		return plataforma;
 	}
-	public void setPlataforma(String plataforma) {
+	public void setPlataforma(Plataforma plataforma) {
 		this.plataforma = plataforma;
 	}
 	
