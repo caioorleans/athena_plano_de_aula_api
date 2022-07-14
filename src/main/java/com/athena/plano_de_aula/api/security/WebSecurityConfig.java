@@ -56,6 +56,7 @@ public class WebSecurityConfig{
                 .antMatchers(HttpMethod.GET,"/planosDeAula/buscarPorId/*").permitAll()
                 .antMatchers(HttpMethod.GET,"/planosDeAula/downloadPdf/*").permitAll()
                 .antMatchers(HttpMethod.GET,"/planosDeAula/verPdf/*").permitAll()
+                .antMatchers(HttpMethod.GET,"/planosDeAula/procurarPrivados/*").hasAnyRole("ADMIN")
                 
                 .anyRequest().authenticated()
                 .and()
