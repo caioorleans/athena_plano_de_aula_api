@@ -88,7 +88,7 @@ public class PlanoDeAulaController {
 	}
 	
 	@PreAuthorize("permitAll")
-	@GetMapping("buscaAvançada/{pag}/{filtro}")
+	@GetMapping("buscaAvancada/{pag}/{filtro}")
 	public Page<PlanoDTO> findByFiltro(@PathVariable Integer pag, @PathVariable String filtro){
 		Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),", Pattern.UNICODE_CHARACTER_CLASS);
 		Matcher matcher = pattern.matcher(filtro + ",");

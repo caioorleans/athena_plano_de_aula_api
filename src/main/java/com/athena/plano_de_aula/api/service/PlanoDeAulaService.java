@@ -105,7 +105,7 @@ public class PlanoDeAulaService {
 	}
 	
 	public PlanoDeAula findById(Integer id) {
-		return repository.findByIdAndPublico(id, true).orElseThrow(()-> new ProductNotFoundException());
+		return repository.findById(id).orElseThrow(()-> new ProductNotFoundException());
 	}
 	
 	public List<PlanoDeAula> findAll(){
