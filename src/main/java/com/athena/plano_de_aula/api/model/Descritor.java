@@ -16,7 +16,7 @@ public class Descritor {
 	@Id
 	private String id;
 	
-	@Column(length = 100)
+	@Column(length = 500)
 	private String descricao;
 	
 	@ManyToOne

@@ -23,13 +23,13 @@ public class PlanoDeAula {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(length = 100)
+	@Column(length = 500)
 	private String titulo;
 	
-	@Column(length = 2000)
+	@Column(length = 5000)
 	private String conteudo;
 	
-	@Column(length = 60)
+	@Column(length = 100)
 	private String autor;
 	
 	@Enumerated(EnumType.STRING)
