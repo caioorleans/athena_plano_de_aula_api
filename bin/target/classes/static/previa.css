@@ -1,0 +1,42 @@
+#planoDeAula{
+    width:50%;
+    margin:auto;
+    margin-bottom: 40px;
+}
+
+#titulo{
+    text-align: center;
+    font-size: 25px;;
+}
+
+#autor-disciplina-titulo{
+    width:70%;
+    margin:auto;
+    display: flex;
+    justify-content:space-evenly;
+    margin-bottom: 10px;
+}
+
+#reds-container{
+    margin-bottom: 10px;
+}
+
+#descritores-container{
+    margin-bottom: 10px;
+}
+
+#reds-container p, #descritores-container p{
+    font-weight: bold;
+}
+
+#reds-lista li, #descritores-lista li{
+    text-align: justify;
+}
+
+#botoes{
+    width: 20%;
+    margin:auto;
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 20px;
+}
