@@ -148,30 +148,15 @@ public class PlanoDeAulaService {
 	public Page<PlanoDeAula> findByFiltro(Integer pag, Matcher matcher) {
 		FiltroDTO filtro = new FiltroDTO();
 		Pageable pageable = PageRequest.of(pag, 8, Sort.by("id"));
+		
+		List<SearchCriteria> criterios = new ArrayList<SearchCriteria>();
+		
 		while (matcher.find()) {
-			switch (matcher.group(1)) {
-			case "ano":
-				filtro.setAno(Integer.parseInt(matcher.group(3)));
-				break;
-			case "disciplinaId":
-				filtro.setDisciplinaId(Integer.parseInt(matcher.group(3)));
-				break;
-			case "descritorId":
-				filtro.setDescritorId(matcher.group(3));
-				break;
-			case "plataforma":
-				if (matcher.group(3).equals("COMPUTADOR")) {
-					filtro.setPlataforma(Plataforma.COMPUTADOR);
-				} else if (matcher.group(3).equals("MOBILE")) {
-					filtro.setPlataforma(Plataforma.MOBILE);
-				}
-			}
-
+			SearchCriteria sc = new SearchCriteria(matcher.group(1),matcher.group(2),matcher.group(3));
+			criterios.add(sc);
 		}
 
 		PlanoSpecificationsBuilder builder = new PlanoSpecificationsBuilder();
-
-		List<SearchCriteria> criterios = buildCriteria(filtro);
 
 		for (SearchCriteria sc : criterios) {
 			builder.with(sc.getKey(), sc.getOperation(), sc.getValue());
@@ -183,33 +168,6 @@ public class PlanoDeAulaService {
 
 		return planos;
 
-	}
-
-	private List<SearchCriteria> buildCriteria(FiltroDTO filtro) {
-		List<SearchCriteria> criterios = new ArrayList<SearchCriteria>();
-
-		if (filtro.getAno() != null) {
-			SearchCriteria sc = new SearchCriteria("ano", ":", filtro.getAno());
-			criterios.add(sc);
-		}
-		if (filtro.getPlataforma() != null) {
-			SearchCriteria sc = new SearchCriteria("plataforma", ":", filtro.getPlataforma());
-			criterios.add(sc);
-		}
-		if (filtro.getDisciplinaId() != null) {
-			Disciplina d = disciplinaService.findById(filtro.getDisciplinaId());
-			SearchCriteria sc = new SearchCriteria("disciplina", ":", d);
-			criterios.add(sc);
-		}
-		if (filtro.getDescritorId() != null) {
-			Descritor d = descritorService.findById(filtro.getDescritorId());
-			Collection descritores = new ArrayList();
-			descritores.add(d);
-			SearchCriteria sc = new SearchCriteria("descritores", "in", descritores);
-			criterios.add(sc);
-		}
-
-		return criterios;
 	}
 
 }

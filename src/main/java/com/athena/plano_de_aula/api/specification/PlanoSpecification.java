@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -28,34 +29,19 @@ public class PlanoSpecification implements Specification<PlanoDeAula>{
 		
         if (criteria.getOperation().equalsIgnoreCase(":")) {
             if (root.get(criteria.getKey()).getJavaType() == String.class) {
-                return builder.like(
-                  root.<String>get(criteria.getKey()), "%" + criteria.getValue() + "%");
+            	if(criteria.getKey().equals("descritores")) {
+            		return builder.equal(descritoresJoin(root).get(criteria.getKey()), criteria.getValue());
+            	}
+                return builder.like(root.<String>get(criteria.getKey()), "%" + criteria.getValue() + "%");
             } else {
                 return builder.equal(root.get(criteria.getKey()), criteria.getValue());
             }
         }
-        else if(criteria.getOperation().equalsIgnoreCase("in")) {
-        	return builder.in(root.get(criteria.getKey())).value(criteria.getValue());
-        }
         return null;
     }
 	
-	private Object castToRequiredType(Class fieldType, String value) {
-		  if(fieldType.isAssignableFrom(Double.class)) {
-		    return Double.valueOf(value);
-		  } else if(fieldType.isAssignableFrom(Integer.class)) {
-		    return Integer.valueOf(value);
-		  } else if(Enum.class.isAssignableFrom(fieldType)) {
-		    return Enum.valueOf(fieldType, value);
-		  }
-		  return null;
-		}
-	
-	private Object castToRequiredType(Class fieldType, List<String> value) {
-		  List<Object> lists = new ArrayList<>();
-		  for (String s : value) {
-		    lists.add(castToRequiredType(fieldType, s));
-		  }
-		  return lists;
+	private Join<PlanoDeAula,Descritor> descritoresJoin(Root<PlanoDeAula> root){
+		return root.join("descritores");
 	}
+	
 }
