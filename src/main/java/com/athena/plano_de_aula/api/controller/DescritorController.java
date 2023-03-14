@@ -26,7 +26,7 @@ public class DescritorController {
 	@Autowired
 	private DescritorService service;
 	
-	@PreAuthorize("permitAll")
+	@PreAuthorize("permitAll()")
 	@GetMapping
 	public List<DescritorDTO> findAll(){
 		return service.findAll();
@@ -38,7 +38,7 @@ public class DescritorController {
 		service.save(form);
 	}
 	
-	@PreAuthorize("permitAll")
+	@PreAuthorize("permitAll()")
 	@GetMapping("buscarPorDisciplina")
 	public List<DescritorDTO> findByDisciplina(Integer id){
 		return service.findByDisciplina(id);

@@ -33,7 +33,7 @@ public class RecursoController {
 		return service.findAll();
 	}
 	
-	@PreAuthorize("permitAll")
+	@PreAuthorize("permitAll()")
 	@GetMapping("/buscarPorId/{id}/{plataforma}")
 	public Recurso findById(@PathVariable Integer id, Plataforma plataforma) {
 		RecursoId rId = new RecursoId();
@@ -42,7 +42,7 @@ public class RecursoController {
 		return service.findById(rId);
 	}
 	
-	@PreAuthorize("permitAll")
+	@PreAuthorize("permitAll()")
 	@GetMapping("/buscarPorDisciplina/{id}")
 	public List<Recurso> findByDisciplina(@PathVariable Integer id) {
 		return service.findByDisciplina(id);

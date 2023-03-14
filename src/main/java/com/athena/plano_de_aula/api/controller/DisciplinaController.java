@@ -31,19 +31,19 @@ public class DisciplinaController {
 		service.save(disciplina);
 	}
 	
-	@PreAuthorize("permitAll")
+	@PreAuthorize("permitAll()")
 	@GetMapping()
 	public List<Disciplina> findAll(){
 		return service.findAll();
 	}
 	
-	@PreAuthorize("permitAll")
+	@PreAuthorize("permitAll()")
 	@GetMapping("/buscarPorDescricao/{descricao}")
 	public Disciplina getByDescricao(@PathVariable("descricao") String descricao) {
 		return service.findByDescricao(descricao);
 	}
 	
-	@PreAuthorize("permitAll")
+	@PreAuthorize("permitAll()")
 	@GetMapping("/buscarPorId/{id}")
 	public Disciplina getById(@PathVariable("id") Integer id) {
 		return service.findById(id);

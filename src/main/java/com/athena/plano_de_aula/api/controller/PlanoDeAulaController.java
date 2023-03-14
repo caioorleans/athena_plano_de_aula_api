@@ -56,13 +56,13 @@ public class PlanoDeAulaController {
 		return service.findAll();
 	}
 	
-	@PreAuthorize("permitAll")
+	@PreAuthorize("permitAll()")
 	@GetMapping("buscarPorId/{id}")
 	public PlanoDeAula findById(@PathVariable Integer id) {
 		return service.findById(id);
 	}
 	
-	@PreAuthorize("permitAll")
+	@PreAuthorize("permitAll()")
 	@PostMapping("salvar")
 	public void save(@Valid @RequestBody PlanoFormulario form) {
 		service.save(form);
@@ -74,7 +74,7 @@ public class PlanoDeAulaController {
 		service.update(form);
 	}
 	
-	@PreAuthorize("permitAll")
+	@PreAuthorize("permitAll()")
 	@GetMapping("buscaSimples/{pag}/{titulo}")
 	public Page<PlanoDTO> findByTituloRecurso(@PathVariable Integer pag, @PathVariable String titulo){
 		Page<PlanoDTO> planos = service.findByRecursos(pag, titulo).map(x -> new PlanoDTO(x));
@@ -87,7 +87,7 @@ public class PlanoDeAulaController {
 		service.delete(id);
 	}
 	
-	@PreAuthorize("permitAll")
+	@PreAuthorize("permitAll()")
 	@GetMapping("buscaAvancada/{pag}/{filtro}")
 	public Page<PlanoDTO> findByFiltro(@PathVariable Integer pag, @PathVariable String filtro){
 		Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),", Pattern.UNICODE_CHARACTER_CLASS);
@@ -109,7 +109,7 @@ public class PlanoDeAulaController {
 		return planos;
 	}
 	
-	@PreAuthorize("permitAll")
+	@PreAuthorize("permitAll()")
 	@GetMapping("procurarPorRecursoId/{pag}/{plataforma}/{id}")
 	public Page<PlanoDTO> getByRecursoId(@PathVariable Integer pag,  @PathVariable Plataforma plataforma, @PathVariable Integer id){
 		RecursoId rId = new RecursoId();
@@ -119,7 +119,7 @@ public class PlanoDeAulaController {
 		return planos;
 	}
 	
-	@PreAuthorize("permitAll")
+	@PreAuthorize("permitAll()")
 	@GetMapping(path = "/downloadPdf/{id}")
     public ResponseEntity<?> getPDF(@PathVariable Integer id, HttpServletRequest request, HttpServletResponse response) throws IOException {
         PlanoDeAula plano = service.findById(id);
@@ -128,7 +128,7 @@ public class PlanoDeAulaController {
         return pdfService.download(bytes);
     }
 	
-	@PreAuthorize("permitAll")
+	@PreAuthorize("permitAll()")
 	@GetMapping(path = "/verPdf/{id}")
     public ResponseEntity<?> viewPDF(@PathVariable Integer id, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		PlanoDeAula plano = service.findById(id);
