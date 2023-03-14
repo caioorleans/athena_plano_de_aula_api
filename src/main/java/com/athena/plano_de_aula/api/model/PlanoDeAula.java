@@ -15,28 +15,36 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
-@Table(name = "plano_de_aula")
+@Table
+@NoArgsConstructor @AllArgsConstructor @Getter @Setter
 public class PlanoDeAula {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(length = 500)
+	@Column(length = 500, nullable = false)
 	private String titulo;
 	
-	@Column(length = 5000)
+	@Column(length = 5000, nullable = false)
 	private String conteudo;
 	
-	@Column(length = 100)
+	@Column(length = 100, nullable = false)
 	private String autor;
 	
 	@Enumerated(EnumType.STRING)
 	private Plataforma plataforma;
 	
+	@Column(nullable = false)
 	private Integer ano;
 	
+	@Column(nullable = false)
 	private Boolean publico;
 	
 	@ManyToOne
@@ -49,69 +57,5 @@ public class PlanoDeAula {
 	@ManyToMany
 	@JoinTable(name="plano_possui_recursos",joinColumns={@JoinColumn(name="id_plano")}, inverseJoinColumns={@JoinColumn(name="id_red"), @JoinColumn(name="plataforma_red")})
 	private List<Recurso> recursos;
-	
-	
-	
-	public Plataforma getPlataforma() {
-		return plataforma;
-	}
-	public void setPlataforma(Plataforma plataforma) {
-		this.plataforma = plataforma;
-	}
-	public Integer getAno() {
-		return ano;
-	}
-	public void setAno(Integer ano) {
-		this.ano = ano;
-	}
-	public List<Recurso> getRecursos() {
-		return recursos;
-	}
-	public void setRecursos(List<Recurso> recursos) {
-		this.recursos = recursos;
-	}
-	public Boolean getPublico() {
-		return publico;
-	}
-	public void setPublico(Boolean publico) {
-		this.publico = publico;
-	}
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	
-	public String getTitulo() {
-		return titulo;
-	}
-	public void setTitulo(String titulo) {
-		this.titulo = titulo;
-	}
-	public String getConteudo() {
-		return conteudo;
-	}
-	public void setConteudo(String conteudo) {
-		this.conteudo = conteudo;
-	}
-	public String getAutor() {
-		return autor;
-	}
-	public void setAutor(String autor) {
-		this.autor = autor;
-	}
-	public Disciplina getDisciplina() {
-		return disciplina;
-	}
-	public void setDisciplina(Disciplina disciplina) {
-		this.disciplina = disciplina;
-	}
-	public List<Descritor> getDescritores() {
-		return descritores;
-	}
-	public void setDescritores(List<Descritor> list) {
-		this.descritores = list;
-	}
 	
 }

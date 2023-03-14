@@ -5,8 +5,14 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Table(name = "red")
+@NoArgsConstructor @AllArgsConstructor @Getter @Setter
 public class Recurso{
 	
 	@EmbeddedId
@@ -16,29 +22,5 @@ public class Recurso{
 	
 	@ManyToOne
 	private Disciplina disciplina;
-
-	public Disciplina getDisciplina() {
-		return disciplina;
-	}
-
-	public void setDisciplina(Disciplina disciplina) {
-		this.disciplina = disciplina;
-	}
-
-	public RecursoId getId() {
-		return id;
-	}
-
-	public void setId(RecursoId id) {
-		this.id = id;
-	}
-
-	public String getTitulo() {
-		return titulo;
-	}
-
-	public void setTitulo(String titulo) {
-		this.titulo = titulo;
-	}
 	
 }

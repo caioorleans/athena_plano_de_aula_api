@@ -7,44 +7,24 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
-@Table(name = "descritor")
-@NamedQuery(name = "Descritor.findByDisciplina",
-query = "select d from Descritor d where d.disciplina.id = ?1")
+@Table
+@NamedQuery(name = "Descritor.findByDisciplina", query = "select d from Descritor d where d.disciplina.id = ?1")
+@NoArgsConstructor @AllArgsConstructor @Getter @Setter
 public class Descritor {
 	
 	@Id
 	private String id;
 	
-	@Column(length = 500)
+	@Column(length = 500, nullable = false)
 	private String descricao;
 	
 	@ManyToOne
 	private Disciplina disciplina;
 	
-	public Descritor() {
-	}
-	public Descritor(String id, String descricao, Disciplina disciplina) {
-		this.id = id;
-		this.descricao = descricao;
-		this.disciplina = disciplina;
-	}
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
-	public String getDescricao() {
-		return descricao;
-	}
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-	public Disciplina getDisciplina() {
-		return disciplina;
-	}
-	public void setDisciplina(Disciplina disciplina) {
-		this.disciplina = disciplina;
-	}
 }
